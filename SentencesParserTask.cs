@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace TextAnalysis
@@ -14,7 +12,7 @@ namespace TextAnalysis
             var patternToEscape = new Regex(@""".*""");
             text = patternToEscape.Replace(text, m => m.Value.ToLower());
 
-            var regex = @"([a-zа-яA-ZА-Я]+)(\s*[.!?;:()]+\s*)";
+            var regex = @"([a-zа-яA-ZА-ЯЁё]+)(\s*[.!?;:()]+\s*)";
             var textWithSplitter = Regex.Replace(text, regex, "$1|$3");
 
             // Extract single-char sentences
@@ -22,7 +20,7 @@ namespace TextAnalysis
             textWithSplitter = Regex.Replace(textWithSplitter, regexForSingleCharSentence, "$1|");
             var sentences = textWithSplitter.Split('|');
 
-            var regexWords = new Regex(@"([a-zа-яA-ZА-Я']+)");
+            var regexWords = new Regex(@"([a-zа-яA-ZА-ЯЁё']+)");
 
             var result = sentences.Select(x => regexWords.Matches(x).Cast<Match>().Select(m => m.Value.ToLower()).ToList()).ToList();
 

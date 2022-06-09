@@ -25,7 +25,7 @@ namespace TextAnalysis
                 "--test=" + string.Join(",", testsToRun)
             });
 
-            var text = File.ReadAllText("HarryPotterText.txt");
+            var text = File.ReadAllText("Master.txt");
             var sentences = SentencesParserTask.ParseSentences(text);
             var frequency = FrequencyAnalysisTask.GetMostFrequentNextWords(sentences);
             //Расскомментируйте этот блок, если хотите выполнить последнюю задачу до первых двух.
