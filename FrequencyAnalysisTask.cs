@@ -53,19 +53,9 @@ namespace TextAnalysis
 
         private static void PrepareResultDictionary(Dictionary<string, string> result, SortedDictionary<(string, string), int> dictionaryTemp)
         {
-            foreach (var pair in dictionaryTemp)
+            foreach (var pair in dictionaryTemp.Where(pair => !result.ContainsKey(pair.Key.Item1)))
             {
-                var tempCount = 0;
-                if (result.ContainsKey(pair.Key.Item1))
-                {
-                    if (dictionaryTemp[pair.Key] > tempCount && dictionaryTemp[pair.Key] != pair.Value)
-                        result[pair.Key.Item1] = pair.Key.Item2;
-                }
-                else
-                {
-                    result.Add(pair.Key.Item1, pair.Key.Item2);
-                    tempCount = dictionaryTemp[pair.Key];
-                }
+                result.Add(pair.Key.Item1, pair.Key.Item2);
             }
         }
    }
