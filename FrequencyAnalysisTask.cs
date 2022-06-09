@@ -18,7 +18,7 @@ namespace TextAnalysis
             }
             foreach (var sentence in text)
             {
-                FillNgrammDicts(sentence, dictionaryBi, dictionaryThree);
+                FillNgramDicts(sentence, dictionaryBi, dictionaryThree);
             }
 
             PrepareResultDictionary(result, dictionaryBi);
@@ -27,7 +27,7 @@ namespace TextAnalysis
             return result;
         }
 
-        private static void FillNgrammDicts(List<string> sentence, SortedDictionary<(string, string), int> dictionaryBi, SortedDictionary<(string, string), int>  dictionaryThree)
+        private static void FillNgramDicts(List<string> sentence, SortedDictionary<(string, string), int> dictionaryBi, SortedDictionary<(string, string), int>  dictionaryThree)
         {
             var newBi = sentence.Where((e, i) => i < sentence.Count - 1).Select((e, i) => new { A = e, B = sentence[i + 1] })
                 .ToList();
@@ -55,18 +55,16 @@ namespace TextAnalysis
         {
             foreach (var pair in dictionaryTemp)
             {
+                var tempCount = 0;
                 if (result.ContainsKey(pair.Key.Item1))
                 {
-                    var max = dictionaryTemp.Keys.Where(x => x.Item1 == pair.Key.Item1).Select(k => dictionaryTemp[k])
-                        .Max();
-                    if (dictionaryTemp[pair.Key] == max && dictionaryTemp[pair.Key] != pair.Value)
-                        result[pair.Key.Item1] = pair.Key.Item2;
-                    if (string.CompareOrdinal(result[pair.Key.Item1], pair.Key.Item2) > 0 && pair.Value == max)
+                    if (dictionaryTemp[pair.Key] > tempCount && dictionaryTemp[pair.Key] != pair.Value)
                         result[pair.Key.Item1] = pair.Key.Item2;
                 }
                 else
                 {
                     result.Add(pair.Key.Item1, pair.Key.Item2);
+                    tempCount = dictionaryTemp[pair.Key];
                 }
             }
         }
